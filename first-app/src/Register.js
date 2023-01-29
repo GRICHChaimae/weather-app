@@ -1,18 +1,47 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+
 
 export default function Register() {
+    const navigation = useNavigation();
+
     const [firstNmae, setFirstNmae] = useState('');
     const [secondName, setSecondName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
   
-    const handleLogin = () => {
-      // Perform login logic here
-      console.log(`Username: ${username} Password: ${password}`);
-    };
+    // const handleLogin = () => {
+    //   // Perform login logic here
+    //   console.log(`Username: ${firstNmae} Password: ${secondName}`);
+    // };
+
+    const regissterClient = async (e) => {
+      e.preventDefault()
+      try {
+          await axios.post("http://localhost:8000/api/v1/user/register",{
+              firstNmae,
+              secondName,
+              email,
+              password
+          }).then((res)=>{
+            setFirstNmae('')
+            setSecondName('')
+            setEmail('')
+            setPassword('')
+            navigation.navigate('Login');
+        })
+      } catch (error) {
+        console.log(error)
+        setErrorMessage(error.response.data.message)
+      }
+  }
+
   return (
     <View style={styles.container}>
+      <Text>{errorMessage}</Text>
       <View style={styles.logoContainer}>
         {/* <Image 
           source={require('path/to/your/logo.png')}
@@ -46,7 +75,7 @@ export default function Register() {
           onChangeText={(text) => setPassword(text)}
           value={password}
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress={handleLogin}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={regissterClient}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>

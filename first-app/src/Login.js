@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, TextInput, TouchableOpacity, Image, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
 import axios from 'axios';
 
 export default function Login() {
@@ -8,39 +8,28 @@ export default function Login() {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
-
-    const handleLogin = () => {
-      // Perform login logic here
-      console.log(`Email: ${email} Password: ${password}`);
-    };
+    const [errorMessage, setErrorMessage] = useState('');
 
     const loginClient = async (e) => {
         e.preventDefault()
         try {
-            await axios.post("http://localhost:5000/api/users/login",{
+            await axios.post("http://localhost:8000/api/v1/user/login",{
                 email,
                 password
             }).then((res)=>{
+                localStorage.setItem('jwt', JSON.stringify(res.data.accessToken));
                 navigation.navigate('Weather');
           })
         } catch (error) {
           console.log(error)
           setErrorMessage(error.response.data.message)
-          Alert.alert(
-            {errorMessage},
-            [ { text: "Understood", onPress: () => console.log("OK Pressed") }]
-          );
         }
     }
 
   return (
     <View style={styles.container}>
+      <Text>{errorMessage}</Text>
       <View style={styles.logoContainer}>
-        {/* <Image 
-          source={require('path/to/your/logo.png')}
-          style={styles.logo}
-        /> */}
         <Text style={styles.logoText}>Your App Name</Text>
       </View>
       <View style={styles.formContainer}>
