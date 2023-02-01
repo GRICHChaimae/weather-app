@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { View, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
 import axios from 'axios';
@@ -14,11 +15,11 @@ export default function Login() {
         e.preventDefault()
         try {
             await axios.post("http://localhost:8000/api/v1/user/login",{
-                email,
-                password
-            }).then((res)=>{
-                localStorage.setItem('jwt', JSON.stringify(res.data.accessToken));
-                navigation.navigate('Weather');
+              email,
+              password
+            }).then((res) => {
+              localStorage.setItem('jwt', JSON.stringify(res.data.accessToken));
+              navigation.navigate('Weather');
           })
         } catch (error) {
           console.log(error)

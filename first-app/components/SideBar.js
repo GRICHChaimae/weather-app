@@ -1,4 +1,5 @@
-import * as React from 'react';
+import react,{useState,useEffect} from 'react';
+import { AsyncStorage } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from '../src/Home';
@@ -13,7 +14,7 @@ export default function SideBar() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Home" component={Home} options={{ headerTitle: '',     headerStyle: { backgroundColor: 'skyblue', } }}  />
         <Drawer.Screen name="Register" component={Register} />
         <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="Weather" component={Weather} />
