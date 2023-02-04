@@ -1,0 +1,29 @@
+version : "3.8"
+services :
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:latest
+    volumes:
+      - mongo_db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+  api :
+    build: ./api
+    container_name: api_c
+    ports:
+      - '8000:8000'
+    environment:
+      PORT:  
+      MONGODB_URI: mongodb://mongo_db:27017
+      DB_NAME: weatherApp
+    volumes:
+      - ./api:/app
+
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db:
