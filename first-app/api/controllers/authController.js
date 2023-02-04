@@ -1,7 +1,9 @@
 const { generateAccessToken } = require('../utils/generateToken')
-const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require ('../models/authModel')
+const bcrypt = require('bcryptjs')
+const { hashPassword } = require('../utils/helpers')
+
 
 const register = asyncHandler ( async (req, res) => {
     const { firstNmae, secondName, email, password } = req.body
@@ -15,12 +17,9 @@ const register = asyncHandler ( async (req, res) => {
 
     if(userExists) {
         res.status(400)
-        throw new Error('User laready exists')
+        throw new Error('User already exists')
     }
-
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
-
+    const hashedPassword = await hashPassword(password)
     const user = await User.create({
         firstNmae,
         secondName,
@@ -29,8 +28,8 @@ const register = asyncHandler ( async (req, res) => {
     })
 
     if(user) {
-        res.status(201).json({
-            _id: user._id,
+        res.status(201)
+        res.json({
             first_name: user.firstNmae,
             last_name: user.secondName,
         })

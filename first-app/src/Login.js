@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { View, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
 import axios from 'axios';
+// import {AsyncStorage} from 'react-native';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -17,8 +18,9 @@ export default function Login() {
             await axios.post("http://localhost:8000/api/v1/user/login",{
               email,
               password
-            }).then((res) => {
+            }).then( async (res) => {
               localStorage.setItem('jwt', JSON.stringify(res.data.accessToken));
+              // await AsyncStorage.setItem('token', 'abc123')
               navigation.navigate('Weather');
           })
         } catch (error) {

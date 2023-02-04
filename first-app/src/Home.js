@@ -23,7 +23,7 @@ export default function Home() {
   
   return (
     <View style={styles.body}>
-      <Text style={styles.title}>Weather App</Text>
+      <Text style={styles.title}>Weather App </Text>
       <Text style={styles.description}>Check the weather in your location</Text>
       <Image
         style={styles.image}
